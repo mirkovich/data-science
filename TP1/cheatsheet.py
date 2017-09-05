@@ -15,7 +15,7 @@ conf = sys.argv[2]
 
 #~ testing es  un bool que nos dice si hay que realizar un test o no 
 testing = (3<len(sys.argv)) 
-
+etiqueta = (5<len(sys.argv))
 #~ recolectamos los tiempos segun cada etiqueta 
 tiempo_soleado = []
 tiempo_nublado = []
@@ -68,20 +68,39 @@ else:
 			if testing:
 				#~ aca va el codigo dependiendo del testing que se quiere hacer  print sys.argv[3] es te tipo de testing
 				testExecute = sys.argv[3]
+				if etiqueta:
+					inOne = sys.argv[4]
+					inTwo = sys.argv[5]
+					if inOne == "soleado":
+						a = tiempo_soleado
+					elif inOne == "nublado":
+						a = tiempo_nublado
+					elif inOne == "lluvioso":
+						a = tiempo_lluvioso	
+
+					if inTwo == "soleado":
+						b = tiempo_soleado
+					elif inTwo == "nublado":
+						b = tiempo_nublado
+					elif inTwo == "lluvioso":
+						b = tiempo_lluvioso	
+				#~ else:
+					#~ print "Ingresar etiquetas: \n - soleado \n - nublado \n - lluvioso"
 				#~ test de apareo
-				if testExecute == "ttest":
-					resultTest = stats.ttest_rel(tiempo_soleado,tiempo_lluvioso)
-					print resultTest
-				elif testExecute == "trank":
-					resultTestRank = stats.wilcoxon(tiempo_soleado,tiempo_lluvioso)
-					print resultTestRank
-				elif testExecute == "tranksum":
-					resultTestRankSum = stats.ranksums(tiempo_soleado,tiempo_lluvioso)	
-					print resultTestRankSum
-				elif testExecute == "tmann":
-					resultTestMann = stats.mannwhitneyu(tiempo_soleado,tiempo_lluvioso)
-					print resultTestMann
-						
+					if testExecute == "ttest":
+						resultTest = stats.ttest_rel(a,b)
+						print resultTest
+					elif testExecute == "trank":
+						resultTestRank = stats.wilcoxon(a,b)
+						print resultTestRank
+					elif testExecute == "tranksum":
+						resultTestRankSum = stats.ranksums(a,b)	
+						print resultTestRankSum
+					elif testExecute == "tmann":
+						resultTestMann = stats.mannwhitneyu(a,b)
+						print resultTestMann
+				else: 
+					print "Ingresar etiquetas: \n - soleado \n - nublado \n - lluvioso"		
 			else: 
 				print "Ingrese el tipo de testing : \n - ttest \n - trank \n - tranksum \n - tmann "
 	
