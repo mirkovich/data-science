@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt	
@@ -5,19 +7,31 @@ import sys
 import pylab as pl
 
 entrada = np.loadtxt(sys.argv[1],skiprows=1)
+
+#~ conf es el parametro que nos dice que tipo de grafico realizar (hay dos opciones:)
+#~ g grafica los datos sin ninguntratamiento previous
+#~ p obtiene un promedio de los datos dadas las etiquetas 
 conf = sys.argv[2]
+
+#~ testing es  un bool que nos dice si hay que realizar un test o no 
+testing = (3<len(sys.argv)) 
+
+#~ recolectamos los tiempos segun cada etiqueta 
 tiempo_soleado = []
 tiempo_nublado = []
 tiempo_lluvioso = []
+
 atletas = []
 count = 1
+
 for line in entrada:
 	tiempo_soleado.append(line[1])
 	tiempo_nublado.append(line[2])
 	tiempo_lluvioso.append(line[3])
 	atletas.append((str)(count))
-	count = count +1 
+	count = count + 1 
 
+#~ codigo para el grafico con el parametro g
 if conf == 'g':
 	X = np.arange(len(tiempo_soleado))
 	Y = np.arange(30)
@@ -30,7 +44,8 @@ if conf == 'g':
 	plt.ylabel('Tiempo en segundos')
 	plt.xlabel('Atleta')
 	plt.legend(loc= "upper right")
-
+	plt.show()
+#~ codigo para el grafico con el parametro p
 else:
 	if conf == 'p':
 		promedioTiempoSol = (reduce((lambda x ,y: x + y), tiempo_soleado))/len(tiempo_soleado)
@@ -47,8 +62,33 @@ else:
 		plt.ylabel('tiempos en segundos')
 		plt.title("Promedios del tiempo")
 		plt.legend(loc="upper left")
+		plt.show()
 	else:
-		print "pasaje incorrecto de parametros, ingrese \n g si quiere graficar los datos, o \n p si quiere el promedio total"
+		if conf == 't':
+			if testing:
+				#~ aca va el codigo dependiendo del testing que se quiere hacer  print sys.argv[3] es te tipo de testing
+				testExecute = sys.argv[3]
+				#~ test de apareo
+				if testExecute == "ttest":
+					resultTest = stats.ttest_rel(tiempo_soleado,tiempo_lluvioso)
+					print resultTest
+				elif testExecute == "trank":
+					resultTestRank = stats.wilcoxon(tiempo_soleado,tiempo_lluvioso)
+					print resultTestRank
+				elif testExecute == "tranksum":
+					resultTestRankSum = stats.ranksums(tiempo_soleado,tiempo_lluvioso)	
+					print resultTestRankSum
+				elif testExecute == "tmann":
+					resultTestMann = stats.mannwhitneyu(tiempo_soleado,tiempo_lluvioso)
+					print resultTestMann
+						
+			else: 
+				print "Ingrese el tipo de testing : \n - ttest \n - trank \n - tranksum \n - tmann "
+	
+		else:
+			print "Pasaje incorrecto de parametros, ingrese: \n - g si quiere graficar los datos, o \n - p si quiere el promedio total \n - t y a continuacion el tipo de testing: \n  # ttest \n  # trank \n  # tranksum \n  # tmann"
 
-plt.show()	
+
+
+	
 		
