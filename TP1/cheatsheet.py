@@ -5,11 +5,12 @@ from scipy import stats
 import matplotlib.pyplot as plt	
 import sys
 import pylab as pl
+import permutation_test as p
 
 entrada = np.loadtxt(sys.argv[1],skiprows=1)
 
 #~ conf es el parametro que nos dice que tipo de grafico realizar (hay dos opciones:)
-#~ g grafica los datos sin ningun tratamiento previo
+#~ g grafica los datos sin ningun tratamiento previous
 #~ p obtiene un promedio de los datos dadas las etiquetas 
 conf = sys.argv[2]
 
@@ -89,24 +90,29 @@ else:
 				#~ test de apareo
 					if testExecute == "ttest":
 						resultTest = stats.ttest_rel(a,b)
-						print resultTest
-					elif testExecute == "trank":
+						print (resultTest)
+					elif testExecute == "twil":
 						resultTestRank = stats.wilcoxon(a,b)
-						print resultTestRank
+						print (resultTestRank)
 					elif testExecute == "tranksum":
 						resultTestRankSum = stats.ranksums(a,b)	
-						print resultTestRankSum
+						print (resultTestRankSum)
 					elif testExecute == "tmann":
 						resultTestMann = stats.mannwhitneyu(a,b)
-						print resultTestMann
+						print (resultTestMann)
+					elif testExecute == "tind":
+						resultTestInd = stats.ttest_ind(a,b)
+						print (resultTestInd)	
+					elif testExecute == "tperm":
+						#~ resultTestPerm =  
+						print(p.permutationtest(a,b))
 				else: 
-					print "Ingresar etiquetas: \n - soleado \n - nublado \n - lluvioso"		
+					print ("Ingresar etiquetas: \n - soleado \n - nublado \n - lluvioso")		
 			else: 
-				print "Ingrese el tipo de testing : \n - ttest \n - trank \n - tranksum \n - tmann "
+				print ("Ingrese el tipo de testing : \n - ttest: 	t-students de muestras apareadas \n - twil: 	test Wilconxon para muestras apareadas  \n - tranksum: 	test para muestras independientes   \n - tmann: 	test Mann-Whitney \n - tind: 	t-test de muestras independientes \n - tperm: 	test de permutacion")
 	
 		else:
-			print "Pasaje incorrecto de parametros, ingrese: \n - g si quiere graficar los datos, o \n - p si quiere el promedio total \n - t y a continuacion el tipo de testing: \n  # ttest \n  # trank \n  # tranksum \n  # tmann"
-
+			print ("Pasaje incorrecto de parametros, ingrese: \n - g si quiere graficar los datos, o \n - p si quiere el promedio total \n - t y a continuacion el tipo de testing: \n  # ttest \n  # twil \n  # tranksum \n  # tmann \n  # tind \n  # tperm")
 
 
 	
