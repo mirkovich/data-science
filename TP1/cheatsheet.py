@@ -10,7 +10,7 @@ import permutation_test as p
 entrada = np.loadtxt(sys.argv[1],skiprows=1)
 
 #~ conf es el parametro que nos dice que tipo de grafico realizar (hay dos opciones:)
-#~ g grafica los datos sin ninguntratamiento previous
+#~ g grafica los datos sin ningun tratamiento previous
 #~ p obtiene un promedio de los datos dadas las etiquetas 
 conf = sys.argv[2]
 
